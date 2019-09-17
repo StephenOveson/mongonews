@@ -21,30 +21,45 @@ $(document).on("click", "#newComment", function() {
     let id = $(this).data("id")
     let commentSet = $("#commentSet")
     let commentForm = $("#commentForm")
+    let divs = document.querySelectorAll("#commentForm");
     API.getComment(id).then(function(result) {
-        commentForm.empty();
-        commentForm.append("<input id='titleinput' name='name' placeholder='Your name' >");
-        commentForm.append("<textarea id='bodyinput' name='body' placeholder='Comment'></textarea>");
-        commentForm.append("<button data-id='" + result._id + "' id='sendComment'>Comment</button>");
-        commentSet.empty();
-        commentSet.append("<h1>Comments</h1>")
-        result.comments.map(function(data){
-            commentSet.append("<h4>Comment: " + data.body + "</h4>")
-            commentSet.append("<p>Name: " + data.name + "</p>");
-            commentSet.append("<hr>")
+        Object.entries(divs).map((object)=>{
+            console.log(object[1])
         })
-    })
-})
+            commentForm.empty();
+            commentForm.toggle();
+            commentForm.append("<input id='titleinput' class='form-control' name='name' placeholder='Your name' >");
+            commentForm.append("<textarea id='bodyinput' class='form-control' name='body' placeholder='Comment'></textarea>");
+            commentForm.append("<button data-id='" + result._id + "' class='form-control' id='sendComment'>Comment</button>");
+            commentSet.empty();
+            commentSet.toggle();
+        if(result.comments[0].body) {
+            commentSet.append("<h2>Comments</h2>");
+        }
+        result.comments.map(function(data){
+                commentSet.append("<h5>Comment: " + data.body + "</h5>");
+                commentSet.append("<p><small>Name: " + data.name + "</small></p>");
+                commentSet.append("<hr>");
+        });
+        window.location.href = "#commentSet";
+    });
+});
 
 $(document).on("click", "#sendComment", function() {
     let id = $(this).data("id");
     let name = $("#titleinput").val();
     let body = $("#bodyinput").val();
-    API.saveComment(id, name, body)
-      .then(function(data) {
-        console.log(data);
-      });
-    $("#titleinput").val("");
-    $("#bodyinput").val("");
+    if (name === "" || body === "") {
+        $("#commentForm").prepend("<h5 class='text-danger' id='commentFail'>Name and/or comment required</h5>");
+    } else {
+        API.saveComment(id, name, body)
+          .then(function(data) {
+            console.log(data);
+            $("#commentFail").empty();
+            $("#commentForm").prepend("<h5 class='text-success'>Comment Sent</h5>");
+          });
+        $("#titleinput").val("");
+        $("#bodyinput").val("");
+    }
   });
   
