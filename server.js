@@ -78,7 +78,7 @@ app.get("/", function(req, res) {
 
   app.get("/articles/:id", function(req, res) {
     db.Article.findOne({ _id: req.params.id})
-      .populate("comment")
+      .populate("comments")
       .then(function(foundOne) {
         res.json(foundOne)
       })
@@ -90,7 +90,7 @@ app.get("/", function(req, res) {
   app.post("/articles/:id", function(req, res) {
     db.Comment.create(req.body)
       .then(function(dbComment) {
-        return db.Article.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id)}, { $push: { comment: dbComment._id } }, { new: true });
+        return db.Article.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id)}, {$push: { 'comments': [dbComment._id]}}, { "new": true, "upsert": true });
       })
       .then(function(dbArticle) {
         res.json(dbArticle)
