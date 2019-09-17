@@ -18,6 +18,14 @@ let ArticleSchema = new Schema({
     type: String,
     required: true
   },
+  image: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: Date,
+    required: true
+  },
   comments: [{
     type: Schema.Types.ObjectId,
     ref: "Comment"

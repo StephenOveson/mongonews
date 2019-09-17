@@ -38,7 +38,12 @@ app.get("/scrape", function (req, res) {
             result.body = $(this)
                 .find("div.entry-content")
                 .text();
-            db.Article.find({}).then(function(found) {
+            result.image = $(this)
+                .find("picture.entry-thumbnail")
+                .children("source")
+                .attr("data-srcset")
+            result.date = Date.now();
+            db.Article.find({}, function(err, found) {
                     if (found.title === result.title) {
                         console.log("skipped" + result.title)
                     } else {
@@ -57,12 +62,8 @@ app.get("/scrape", function (req, res) {
 });
 
 app.get("/", function(req, res) {
-    db.Article.find({}, function(err, found) {
-      if (err) {
-        res.json(err)
-      } else {
+    db.Article.find({}).sort({date: 1}).then(function(found) {
         res.render("index", {found: found})
-      }
     })
   });
 

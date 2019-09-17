@@ -19,7 +19,7 @@ API = {
 
 $(document).on("click", "#newComment", function() {
     let id = $(this).data("id")
-    let commentSet = $("#commentSet")
+    let commentGet = $("#commentGet")
     let commentForm = $("#commentForm")
     let divs = document.querySelectorAll("#commentForm");
     API.getComment(id).then(function(result) {
@@ -31,17 +31,17 @@ $(document).on("click", "#newComment", function() {
             commentForm.append("<input id='titleinput' class='form-control' name='name' placeholder='Your name' >");
             commentForm.append("<textarea id='bodyinput' class='form-control' name='body' placeholder='Comment'></textarea>");
             commentForm.append("<button data-id='" + result._id + "' class='form-control' id='sendComment'>Comment</button>");
-            commentSet.empty();
-            commentSet.toggle();
+            commentGet.empty();
+            commentGet.toggle();
         if(result.comments[0].body) {
-            commentSet.append("<h2>Comments</h2>");
+            commentGet.append("<h2>Comments</h2>");
         }
         result.comments.map(function(data){
-                commentSet.append("<h5>Comment: " + data.body + "</h5>");
-                commentSet.append("<p><small>Name: " + data.name + "</small></p>");
-                commentSet.append("<hr>");
+                commentGet.append("<h5>Comment: " + data.body + "</h5>");
+                commentGet.append("<p><small>Name: " + data.name + "</small></p>");
+                commentGet.append("<hr>");
         });
-        window.location.href = "#commentSet";
+        window.location.href = "#commentGet";
     });
 });
 
