@@ -1,4 +1,16 @@
 API = {
+    getScrape: () => {
+        return $.ajax({
+            url: "scrape",
+            method: "GET"
+        })
+    },
+    getArticle: () => {
+        return $.ajax({
+            url: "articles",
+            method: "GET"
+        })
+    },
     getComment: (id) => {
         return $.ajax({
             url: "articles/" + id,
@@ -16,6 +28,9 @@ API = {
         })
     }
 };
+
+API.getScrape();
+API.getArticle();
 
 $(document).on("click", "#newComment", function() {
     let id = $(this).data("id")
@@ -40,9 +55,9 @@ $(document).on("click", "#newComment", function() {
                 commentGet.append("<h5>Comment: " + data.body + "</h5>");
                 commentGet.append("<p><small>Name: " + data.name + "</small></p>");
                 commentGet.append("<hr>");
+            });
         });
         window.location.href = "#commentGet";
-    });
 });
 
 $(document).on("click", "#sendComment", function() {

@@ -8,19 +8,23 @@ let Schema = mongoose.Schema;
 let ArticleSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   link: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   body: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   image: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   date: {
     type: Date,
