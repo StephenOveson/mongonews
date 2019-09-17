@@ -1,38 +1,27 @@
 <div class="container">
     <div class="row">
         <div class="container jumbotron text-center bg-info col-xl-10">
-            <h1 class="display-4">Mongo News</h1>
+            <h1 class="display-4 text-white">Mongo News</h1>
         </div>
         <div class="container"></div>
     </div>
 </div>
 
 {{#each found}}
-<div class="container">
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-1">
-            <img src="{{this.image}}" />
-        </div>
-        <div class="col-2"></div>
-        <div class="col-lg-7">
-            <h2>{{this.title}}</h2>
-            <p><small>{{this.link}}</small></p>
-        </div>
-        <div class="col">
-        </div>
+<div class="card mb-3 col-xl-8 col-sm-11 mx-auto">
+  <div class="row no-gutters">
+    <div class="col-md-4 mt-auto mb-auto">
+      <img src="{{this.image}}" class="card-img" alt="{{this.title}}">
     </div>
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-lg-10">
-            <blockquote class="blockquote">
-                <p>{{this.body}}</p>
-            </blockquote>
-            <button id="newComment" href="#commentGet" data-id="{{this._id}}">Comment</button>
-        </div>
-        <div class="col-1">
-        </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{this.title}}</h5>
+        <hr>
+        <p class="card-text">{{this.body}}</p>
+        <p class="card-text"><small class="text-muted">Last Updated: {{this.date}}</small></p>
+        <button id="newComment" href="#commentGet" class="form-control" data-id="{{this._id}}">Comment</button>
+      </div>
     </div>
+  </div>
 </div>
-<hr class="col-lg-8">
 {{/each}}
