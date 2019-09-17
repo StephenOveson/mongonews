@@ -36,18 +36,13 @@ $(document).on("click", "#newComment", function() {
     let id = $(this).data("id")
     let commentGet = $("#commentGet")
     let commentForm = $("#commentForm")
-    let divs = document.querySelectorAll("#commentForm");
     API.getComment(id).then(function(result) {
-        Object.entries(divs).map((object)=>{
-            console.log(object[1])
-        })
             commentForm.empty();
-            commentForm.toggle();
             commentForm.append("<input id='titleinput' class='form-control' name='name' placeholder='Your name' >");
             commentForm.append("<textarea id='bodyinput' class='form-control' name='body' placeholder='Comment'></textarea>");
             commentForm.append("<button data-id='" + result._id + "' class='form-control' id='sendComment'>Comment</button>");
             commentGet.empty();
-            commentGet.toggle();
+            $("#hideComment").toggle();
         if(result.comments[0].body) {
             commentGet.append("<h2>Comments</h2>");
         }
@@ -64,6 +59,7 @@ $(document).on("click", "#sendComment", function() {
     let id = $(this).data("id");
     let name = $("#titleinput").val();
     let body = $("#bodyinput").val();
+    $("#hideComment").toggle();
     if (name === "" || body === "") {
         $("#commentForm").prepend("<h5 class='text-danger' id='commentFail'>Name and/or comment required</h5>");
     } else {
