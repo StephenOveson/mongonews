@@ -1,5 +1,6 @@
 let express = require("express");
 let mongoose = require("mongoose")
+let path = require("path");
 
 let axios = require("axios");
 let cheerio = require("cheerio");
@@ -11,7 +12,12 @@ let app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"));
+app.use("/public", express.static(path.join(__dirname, "public")));
+
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 mongoose.connect("mongodb://localhost/mongoNews", { useNewUrlParser: true });
 
@@ -32,19 +38,35 @@ app.get("/scrape", function (req, res) {
             result.body = $(this)
                 .find("div.entry-content")
                 .text();
-            db.Article.create(result)
-                .then(function (dbArticle) {
-                    console.log(dbArticle);
-                })
-                .catch(function (err) {
-                    console.log(err);
-                });
+            db.Article.find({}).then(function(found) {
+                    if (found.title === result.title) {
+                        console.log("skipped" + result.title)
+                    } else {
+                        db.Article.create(result)
+                        .then(function (dbArticle) {
+                            console.log(dbArticle);
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+                }
+            })
         });
         res.send("Scrape Complete")
     });
 });
 
-app.get("/articles", function(req, res) {
+app.get("/", function(req, res) {
+    db.Article.find({}, function(err, found) {
+      if (err) {
+        res.json(err)
+      } else {
+        res.render("index", {found: found})
+      }
+    })
+  });
+
+  app.get("/articles", function(req, res) {
     db.Article.find({}, function(err, found) {
       if (err) {
         res.json(err)
@@ -68,7 +90,7 @@ app.get("/articles", function(req, res) {
   app.post("/articles/:id", function(req, res) {
     db.Comment.create(req.body)
       .then(function(dbComment) {
-        return db.Article.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id)}, { $push: { note: dbComment._id } }, { new: true });
+        return db.Article.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id)}, { $push: { comment: dbComment._id } }, { new: true });
       })
       .then(function(dbArticle) {
         res.json(dbArticle)

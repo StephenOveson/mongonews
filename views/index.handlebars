@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row">
+        <div class="container jumbotron text-center bg-info col-xl-10">
+            <h1 class="display-4">Mongo News</h1>
+        </div>
+        <div class="container"></div>
+    </div>
+</div>
+
+{{#each found}}
+<div class="container">
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-lg-10">
+        <h2>{{this.title}}</h2>
+        <p><small>{{this.link}}</small></p>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+      <div class="col-lg-10">
+        <blockquote class="blockquote">
+        <p>{{this.body}}</p>
+        </blockquote>
+        <button id="newComment" data-id="{{this._id}}">Comment</button>
+        <div id="comments" class="col-lg-3">
+        </div>
+      </div>
+  </div>
+</div>
+<hr class="col-lg-8">
+{{/each}}
