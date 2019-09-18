@@ -43,10 +43,7 @@ app.get("/scrape", function (req, res) {
         .find("picture.entry-thumbnail")
         .children("source")
         .attr("data-srcset")
-      result.date = $(this)
-        .find("div.entry-meta")
-        .children("p")
-        .text();
+      result.date = Date.now();
       db.Article.create(result)
         .then(function (dbArticle) {
           console.log(dbArticle);
@@ -60,7 +57,7 @@ app.get("/scrape", function (req, res) {
 });
 
 app.get("/", function (req, res) {
-  db.Article.find({}).sort({ date: 1 }).then(function (found) {
+  db.Article.find({}).sort({ date: -1 }).then(function (found) {
     res.render("index", { found: found })
   })
 });

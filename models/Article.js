@@ -27,7 +27,7 @@ let ArticleSchema = new Schema({
     unique: true
   },
   date: {
-    type: String,
+    type: Date,
     required: true
   },
   comments: [{
