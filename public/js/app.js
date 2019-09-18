@@ -38,30 +38,30 @@ API = {
 API.getScrape();
 API.getArticle();
 
-$(document).on("click", "#newComment", function() {
+$(document).on("click", "#newComment", function () {
     let id = $(this).data("id")
     let commentGet = $("#commentGet")
     let commentForm = $("#commentForm")
-    API.getComment(id).then(function(result) {
-            commentForm.empty();
-            commentForm.append("<input id='titleinput' class='form-control' name='name' placeholder='Your name' >");
-            commentForm.append("<textarea id='bodyinput' class='form-control' name='body' placeholder='Comment'></textarea>");
-            commentForm.append("<button data-id='" + result._id + "' class='form-control' id='sendComment'>Comment</button>");
-            commentGet.empty();
-            $("#hideComment").toggle();
-        if(result.comments[0].body) {
+    API.getComment(id).then(function (result) {
+        commentForm.empty();
+        commentForm.append("<input id='titleinput' class='form-control' name='name' placeholder='Your name' >");
+        commentForm.append("<textarea id='bodyinput' class='form-control' name='body' placeholder='Comment'></textarea>");
+        commentForm.append("<button data-id='" + result._id + "' class='form-control' id='sendComment'>Comment</button>");
+        commentGet.empty();
+        $("#hideComment").toggle();
+        if (result.comments[0].body) {
             commentGet.append("<h2>Comments</h2>");
         }
         result.comments.map(data => {
-                commentGet.append("<h5>Comment: " + data.body + "</h5>");
-                commentGet.append("<p><small>Name: " + data.name + "</small></p>");
-                commentGet.append("<button data-id='" + data._id + "' class='btn btn-outline-danger' id='removeComment'>X</button>")
-                commentGet.append("<hr>");
-            });
+            commentGet.append("<h5>Comment: " + data.body + "</h5>");
+            commentGet.append("<p><small>Name: " + data.name + "</small></p>");
+            commentGet.append("<button data-id='" + data._id + "' class='btn btn-outline-danger' id='removeComment'>X</button>")
+            commentGet.append("<hr>");
         });
+    });
 });
 
-$(document).on("click", "#sendComment", function() {
+$(document).on("click", "#sendComment", function () {
     let id = $(this).data("id");
     let name = $("#titleinput").val();
     let body = $("#bodyinput").val();
@@ -70,22 +70,22 @@ $(document).on("click", "#sendComment", function() {
         $("#commentForm").prepend("<h5 class='text-danger' id='commentFail'>Name and/or comment required</h5>");
     } else {
         API.saveComment(id, name, body)
-          .then(function(data) {
-            console.log(data);
-            $("#commentFail").empty();
-            $("#commentForm").prepend("<h5 class='text-success'>Comment Sent</h5>");
-          });
+            .then(function (data) {
+                console.log(data);
+                $("#commentFail").empty();
+                $("#commentForm").prepend("<h5 class='text-success'>Comment Sent</h5>");
+            });
         $("#titleinput").val("");
         $("#bodyinput").val("");
     }
-  });
-  
-  $(document).on("click", "#removeComment", function() {
+});
+
+$(document).on("click", "#removeComment", function () {
     let removeId = $(this).data("id");
     $("#hideComment").toggle();
-    API.deleteComment(removeId).then(function(removed) {
+    API.deleteComment(removeId).then(function (removed) {
         console.log(removed)
-    }).catch(function(err) {
+    }).catch(function (err) {
         console.log(err);
     })
-  });
+});
