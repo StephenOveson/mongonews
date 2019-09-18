@@ -4,6 +4,7 @@ const path = require("path");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
+const moment = require("moment")
 
 
 let PORT = process.env.PORT || 3000;
@@ -43,7 +44,7 @@ app.get("/scrape", function (req, res) {
         .find("picture.entry-thumbnail")
         .children("source")
         .attr("data-srcset")
-      result.date = Date.now();
+      result.date = moment().format();
       db.Article.create(result)
         .then(function (dbArticle) {
           console.log(dbArticle);
@@ -106,6 +107,7 @@ app.delete("/articles/:id", function (req, res) {
   })
 });
 
+require("./routes/apiRoutes")(app);
 
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
