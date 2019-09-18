@@ -51,9 +51,10 @@ $(document).on("click", "#newComment", function () {
         $("#hideComment").toggle();
         if (result.comments[0].body) {
             commentGet.append("<h2>Comments</h2>");
+            commentGet.append("<hr>")
         }
         result.comments.map(data => {
-            commentGet.append("<h5>Comment: " + data.body + "</h5>");
+            commentGet.append("<h5>" + data.body + "</h5>");
             commentGet.append("<p><small>Name: " + data.name + "</small></p>");
             commentGet.append("<button data-id='" + data._id + "' class='btn btn-outline-danger' id='removeComment'>X</button>")
             commentGet.append("<hr>");
