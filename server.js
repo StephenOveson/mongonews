@@ -43,7 +43,10 @@ app.get("/scrape", function (req, res) {
         .find("picture.entry-thumbnail")
         .children("source")
         .attr("data-srcset")
-      result.date = Date.now();
+      result.date = $(this)
+        .find("div.entry-meta")
+        .children("p")
+        .text();
       db.Article.create(result)
         .then(function (dbArticle) {
           console.log(dbArticle);
