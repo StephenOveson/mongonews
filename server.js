@@ -60,7 +60,7 @@ app.get("/scrape", function (req, res) {
 });
 
 app.get("/", function (req, res) {
-  db.Article.find({}).sort({ date: -1 }).then(function (found) {
+  db.Article.find({}).sort({ date: 1 }).then(function (found) {
     res.render("index", { found: found })
   })
 });

@@ -1,10 +1,10 @@
 <div class="container">
-    <div class="row">
-        <div class="container jumbotron text-center bg-info col-xl-10">
-            <h1 class="display-4 text-white">Mongo News</h1>
-        </div>
-        <div class="container"></div>
+  <div class="row">
+    <div class="container jumbotron text-center bg-info col-xl-10">
+      <h1 class="display-4 text-white">Mongo News</h1>
     </div>
+    <div class="container"></div>
+  </div>
 </div>
 
 {{#each found}}
@@ -25,3 +25,21 @@
   </div>
 </div>
 {{/each}}
+
+<div class="fixed-bottom bg-white" id="hideComment" style="max-height: 350px; overflow:scroll; display: none">
+  <div class="container">
+    <div class="row">
+      <div class="mx-auto" id="commentScroll">
+        <p class="text-danger">Scroll Down To Comment</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1"></div>
+      <div id="commentGet" class="col-lg-10 mt-2"></div>
+    </div>
+    <div class="row">
+      <div class="col-1"></div>
+      <div id="commentForm" class="col-lg-10"></div>
+    </div>
+  </div>
+</div>
