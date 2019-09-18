@@ -1,3 +1,10 @@
+const axios = require("axios");
+const cheerio = require("cheerio");
+const db = require("../models");
+const moment = require("moment")
+const mongoose = require("mongoose")
+
+
 module.exports = function(app) {
     app.get("/scrape", function (req, res) {
         axios.get("https://nypost.com/news/").then(function (response) {
