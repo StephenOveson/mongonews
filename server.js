@@ -1,10 +1,9 @@
-let express = require("express");
-let mongoose = require("mongoose")
-let path = require("path");
-
-let axios = require("axios");
-let cheerio = require("cheerio");
-let db = require("./models");
+const express = require("express");
+const mongoose = require("mongoose")
+const path = require("path");
+const axios = require("axios");
+const cheerio = require("cheerio");
+const db = require("./models");
 
 
 let PORT = 3000;
@@ -14,12 +13,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-var exphbs = require("express-handlebars");
+const exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoNews";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoNews";
 
 mongoose.connect(MONGODB_URI);
 
@@ -45,22 +44,16 @@ app.get("/scrape", function (req, res) {
         .children("source")
         .attr("data-srcset")
       result.date = Date.now();
-      db.Article.find({}, function (err, found) {
-        if (found.title === result.title) {
-          console.log("skipped" + result.title)
-        } else {
-          db.Article.create(result)
-            .then(function (dbArticle) {
-              console.log(dbArticle);
-            })
-            .catch(function (err) {
-              console.log(err);
-            });
-        }
-      })
-    });
-    res.send("Scrape Complete")
+      db.Article.create(result)
+        .then(function (dbArticle) {
+          console.log(dbArticle);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    })
   });
+  res.send("Scrape Complete")
 });
 
 app.get("/", function (req, res) {
