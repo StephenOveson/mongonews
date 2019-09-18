@@ -26,6 +26,12 @@ API = {
                 body: body
             }
         })
+    },
+    deleteComment: (id) => {
+        return $.ajax({
+            url: "articles/" + id,
+            method: "DELETE"
+        })
     }
 };
 
@@ -46,13 +52,13 @@ $(document).on("click", "#newComment", function() {
         if(result.comments[0].body) {
             commentGet.append("<h2>Comments</h2>");
         }
-        result.comments.map(function(data){
+        result.comments.map(data => {
                 commentGet.append("<h5>Comment: " + data.body + "</h5>");
                 commentGet.append("<p><small>Name: " + data.name + "</small></p>");
+                commentGet.append("<button data-id='" + data._id + "' class='btn btn-outline-danger' id='removeComment'>X</button>")
                 commentGet.append("<hr>");
             });
         });
-        window.location.href = "#commentGet";
 });
 
 $(document).on("click", "#sendComment", function() {
@@ -74,3 +80,12 @@ $(document).on("click", "#sendComment", function() {
     }
   });
   
+  $(document).on("click", "#removeComment", function() {
+    let removeId = $(this).data("id");
+    $("#hideComment").toggle();
+    API.deleteComment(removeId).then(function(removed) {
+        console.log(removed)
+    }).catch(function(err) {
+        console.log(err);
+    })
+  });
