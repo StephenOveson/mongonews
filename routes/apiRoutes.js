@@ -7,6 +7,7 @@ const mongoose = require("mongoose")
 
 module.exports = function(app) {
     app.get("/scrape", function (req, res) {
+        // grab latest articles from nypost.com/news
         axios.get("https://nypost.com/news/").then(function (response) {
           let $ = cheerio.load(response.data)
       
@@ -28,6 +29,7 @@ module.exports = function(app) {
               .children("source")
               .attr("data-srcset")
             result.date = moment().format();
+            //add the articles to the mongo database of articles
             db.Article.create(result)
               .then(function (dbArticle) {
                 console.log(dbArticle);

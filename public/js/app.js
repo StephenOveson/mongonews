@@ -36,8 +36,9 @@ API = {
 };
 
 // get new articles and put them on page
-API.getScrape();
-API.getArticle();
+API.getScrape().then(function() {
+    API.getArticle();
+});
 
 $(document).on("click", "#newComment", function() {
     let id = $(this).data("id")
@@ -94,3 +95,4 @@ $(document).on("click", "#removeComment", function() {
         console.log(err);
     })
 });
+
